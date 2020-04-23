@@ -3,7 +3,7 @@
 var Parser = require('rss-parser');
 
 class RSS {
-    #l_link_rss = new Array('https://queryfeed.net/tw?q=%40JLMelenchon');
+    #l_link_rss_flux = new Array('https://queryfeed.net/tw?q=%40JLMelenchon');
     #fetch_interval = 10; //In seconds
 
 
@@ -14,7 +14,7 @@ class RSS {
     async FetchRssLinks(){
         var parser = new Parser();
 
-        for(let link of this.#l_link_rss){
+        for(let link of this.#l_link_rss_flux){
 
             let feed = await parser.parseURL(link);
 
@@ -24,12 +24,12 @@ class RSS {
         }
     }
 
-    GetRssLinks(){
-        return this.#l_link_rss;
+    GetRssLink(){
+        return this.#l_link_rss_flux;
     }
 
-    StartRepeatingFetch(){
-        setInterval(FetchRssLinks, this.#fetch_interval);
+    start_repeating_fetch(){
+        setInterval(fetch_rss_links, fetch_interval);
     }
 
 }

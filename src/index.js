@@ -5,12 +5,9 @@ const Discord = require('discord.js');
 const Fs = require("fs");
 const Vm = require('vm');
 
-const RSS = require("./rss.js");
+const RSS = require("./rss.js"); //console.log(Discord);
 const Command = require("./command.js");
-const SynthesizeSpeech = require("./synthesize_speech.js");
-
-//var a = 0;
-
+var global_ = require("./global");
 
 // Create an instance of a Discord client
 var client = new Discord.Client();
@@ -31,10 +28,11 @@ client.on('ready', () => {
 client.on('message', message => {
     if(message.content[0] === "!"){
 
-    var command = message.content.replace("!", "", 1);
-    var parsed_command = command.split(" ");
+    let command = message.content.replace("!", "", 1);
+    let channel = message.channel;
+    let author = message.author;
 
-    Command.TreatCommand(parsed_command, message.channel, client);
+    Command.TreatCommand(command, channel, client, author);
     }
 
     //On regarde si le message est le channel qui permet de diffuser dans le channel Général de Team
@@ -47,11 +45,6 @@ client.on('message', message => {
 });
 
 
-SynthesizeSpeech.GetSynthesizeSpeech();
-
-
-
-
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('NjcwMzAzMjUxMjk5ODI3NzI1.XpjDOQ.fqYIH3BfIfoMQrDAotJkF3IKpZw');
+client.login('Token');

@@ -1,0 +1,43 @@
+{
+    "text_commands" : [
+        {
+            "name": "say",
+            "description": "Make the bot talk",
+            "use": "!say <channel_id> <text>",
+            "permission": "1"
+        },
+        {
+            "name": "broadcast",
+            "description": "Get the bot to play some music",
+            "use": "!broadcast <channel_id> <url> [<volume>]",
+            "permission": "1"
+        },
+        {
+            "name": "send",
+            "description": "Make the bot send a message",
+            "use": "!send <channel_id> <text>",
+            "permission": "1"
+        },
+        {
+            "name": "moveto",
+            "description": "Adds the bot to a voice channel",
+            "use": "!moveto <channel_id>",
+            "permission": "1"
+        },
+        {
+            "name": "shutdown",
+            "description": "Turn off the bot",
+            "use": "!shutdown",
+            "permission": "1"
+        },
+        {
+            "name": "musicmode",
+            "description": "Activate/Desactivate music mode",
+            "use": "!musicmode",
+            "permission": "1"
+        }
+    ],
+
+    "voice_commands": []
+
+}
