@@ -1,15 +1,15 @@
 {
     "text_commands" : [
         {
-            "name": "say",
-            "description": "Make the bot talk",
-            "use": "!say <channel_id> <text>",
+            "name": "help",
+            "description": "Display this help page",
+            "use": "!help [<page>]",
             "permission": "1"
         },
         {
-            "name": "broadcast",
-            "description": "Get the bot to play some music",
-            "use": "!broadcast <channel_id> <url> [<volume>]",
+            "name": "say",
+            "description": "Make the bot talk",
+            "use": "!say <channel_id> <text>",
             "permission": "1"
         },
         {
@@ -19,8 +19,14 @@
             "permission": "1"
         },
         {
+            "name": "broadcast",
+            "description": "Get the bot to play some music",
+            "use": "!broadcast <channel_id> <url> [<volume>]",
+            "permission": "1"
+        },
+        {
             "name": "moveto",
-            "description": "Adds the bot to a voice channel",
+            "description": "Add the bot to a voice channel",
             "use": "!moveto <channel_id>",
             "permission": "1"
         },
@@ -33,7 +39,13 @@
         {
             "name": "musicmode",
             "description": "Activate/Desactivate music mode",
-            "use": "!musicmode",
+            "use": "!musicmode <voice_channel_id>",
+            "permission": "1"
+        },
+        {
+            "name": "sy (In music mode only)",
+            "description": "Search for videos on YouTube",
+            "use": "!sy <regexp>",
             "permission": "1"
         }
     ],

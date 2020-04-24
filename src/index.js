@@ -7,20 +7,19 @@ const Vm = require('vm');
 
 const RSS = require("./rss.js"); //console.log(Discord);
 const Command = require("./command.js");
-var global_ = require("./global");
+const Youtube = require("./youtube.js");
+const MusicMode = require("./musicmode.js");
 
 // Create an instance of a Discord client
 var client = new Discord.Client();
 var rss = new RSS();
 
-/**
- * The ready event is vital, it means that only _after_ this will your bot start reacting to information
- * received from Discord
- */
+
+
 client.on('ready', () => {
     console.log('I am ready!');
 
-    rss.FetchRssLinks();
+    //rss.FetchRssLinks();
     client.user.setActivity("un meeting de JLM", {type: "WATCHING"});
 });
 
