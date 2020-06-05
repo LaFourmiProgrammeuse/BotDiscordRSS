@@ -46,6 +46,8 @@ module.exports.Speak = function (data, callback_arg){
     for (const connection of client.voice.connections.values()) {
 
         if(connection.channel.id == channel_id) {
+            
+
             dispatcher = connection.play(Fs.createReadStream('../text_to_speak.mp3'));
         }
     }

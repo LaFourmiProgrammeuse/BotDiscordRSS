@@ -11,6 +11,7 @@ module.exports.Search = async function(params, callback, callback_arg){
         await LoadToken();
     }
 
+
     var params_serialized = Qs.stringify(params, {arrayFormat: 'brackets'}) + "&key=" + youtube_token;
 
     url = youtube_api_path + "search?" + params_serialized;
@@ -18,6 +19,7 @@ module.exports.Search = async function(params, callback, callback_arg){
         method: "get",
         url: url
     }).then(function (response) {
+        console.log("2");
         callback(response, callback_arg);
     });
 }

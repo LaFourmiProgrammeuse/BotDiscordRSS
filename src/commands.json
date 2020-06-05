@@ -43,9 +43,51 @@
             "permission": "1"
         },
         {
-            "name": "sy (In music mode only)",
+            "name": "syv (In music mode only)",
             "description": "Search for videos on YouTube",
-            "use": "!sy <regexp>",
+            "use": "!syv <query>",
+            "permission": "1"
+        },
+        {
+            "name": "nyv (In music mode only)",
+            "description": "Play the following music from the search",
+            "use": "!nyv",
+            "permission": "1"
+        },
+        {
+            "name": "pyv (In music mode only)",
+            "description": "Play the previous music from the search",
+            "use": "!pyv",
+            "permission": "1"
+        },
+        {
+            "name": "rsslist",
+            "description": "Affiche la liste des liens rss pour un channel",
+            "use": "!rsslist [<channel>]",
+            "permission": "1"
+        },
+        {
+            "name": "rssadd",
+            "description": "Add an rss link to the list of a channel",
+            "use": "!rssadd [<channel>] <rss_url>",
+            "permission": "1"
+        },
+        {
+            "name": "rssremove",
+            "description": "Remove an SSR link to the list of a channel",
+            "use": "!rssremove [<channel>] <rss_url>",
+            "permission": "1"
+        },
+        {
+            "name": "rfo",
+            "description": "Retrieves once the rss link data from the list of the specified channel",
+            "use": "!rfo [<channel>]",
+            "permission": "1"
+        },
+        {
+            "name": "rfa",
+            "description": "Automatically retrieve rss link data from the specified channel list",
+            "use": "!rfa [<channel>]",
             "permission": "1"
         }
     ],

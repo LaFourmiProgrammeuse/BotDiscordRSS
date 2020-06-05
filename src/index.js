@@ -5,16 +5,16 @@ const Discord = require('discord.js');
 const Fs = require("fs");
 const Vm = require('vm');
 
-const RSS = require("./rss.js"); //console.log(Discord);
+// Create an instance of a Discord client
+var client = new Discord.Client();
+module.exports.GetDiscordClient = function(){
+    return client;
+}
+
+const Rss = require("./rss.js");
 const Command = require("./command.js");
 const Youtube = require("./youtube.js");
 const MusicMode = require("./musicmode.js");
-
-// Create an instance of a Discord client
-var client = new Discord.Client();
-var rss = new RSS();
-
-
 
 client.on('ready', () => {
     console.log('I am ready!');
@@ -25,6 +25,9 @@ client.on('ready', () => {
 
 // Create an event listener for messages
 client.on('message', message => {
+
+    //client.user.setStatus("Test");
+
     if(message.content[0] === "!"){
 
     let command = message.content.replace("!", "", 1);
@@ -43,7 +46,11 @@ client.on('message', message => {
     }
 });
 
-
+Rss.FetchRssLinks();
+Rss.FetchRssLinks();
+Rss.FetchRssLinks();
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('Token');
+client.login('NjcwMzAzMjUxMjk5ODI3NzI1.Xp24jA.gDm98UXsnQAQimjfdM3V2WoGpKw');
+
+//Token Bot : NjcwMzAzMjUxMjk5ODI3NzI1.Xp24jA.gDm98UXsnQAQimjfdM3V2WoGpKw
