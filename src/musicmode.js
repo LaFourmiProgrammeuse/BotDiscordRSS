@@ -1,21 +1,29 @@
 const Youtube = require("./youtube.js");
 const Command = require("./command.js");
 
+var MusicMode = module.exports;
+
 var l_c_musicmode = Array(); //On stocke dedans les couples d'ID text/voice channel
 
 var l_video_last_search = [];
 var index_video_search = 0;
 var n_video_per_search = 15;
 
-module.exports.ToogleMusicMode = function (text_channel_id, voice_channel_id, channel) {
+var l_music_dispatcher = new Map();
 
-    console.log(l_c_musicmode); console.log(text_channel_id + voice_channel_id);
+
+//getters */* setters
+module.exports.GetListMusicDispatcher = function(){
+    return l_music_dispatcher;
+}
+
+module.exports.ToogleMusicMode = function (text_channel_id, voice_channel_id, channel) {
 
     for(var i = 0; i < l_c_musicmode.length; i++){
 
         if(l_c_musicmode[i]["text_channel_id"] == text_channel_id && l_c_musicmode[i]["voice_channel_id"] == voice_channel_id){
 
-            console.log(l_c_musicmode.splice(i, 1)); console.log(i);
+            console.log(l_c_musicmode.splice(i, 1));
             channel.send("Music mode has been desactivated for this channel");
 
             return;
@@ -65,7 +73,7 @@ function GetLinkedTextChannel(voice_channel_id){
     return l_linked_text_channel;
 }
 
-module.exports.SearchVideo = function (query, text_channel, client){
+module.exports.SearchVideo = function (query, text_channel, client, auto_play){
 
     query = query.replace(" ", "+")
 
@@ -76,7 +84,7 @@ module.exports.SearchVideo = function (query, text_channel, client){
         "maxResults": n_video_per_search
     }
 
-    var callback_arg = {"text_channel": text_channel, "client": client}
+    var callback_arg = {"text_channel": text_channel, "client": client, "auto_play": auto_play}
 
     Youtube.Search(params, TreatSearchResponse, callback_arg);
 
@@ -92,12 +100,13 @@ function TreatSearchResponse(response, callback_arg){
 
     var text_channel = callback_arg["text_channel"];
     var client = callback_arg["client"];
+    var auto_play = callback_arg["auto_play"];
 
-    Play(text_channel, client);
+    Play(text_channel, client, auto_play);
 
 }
 
-async function Play(text_channel, client){
+async function Play(text_channel, client, auto_play){
 
     var url_video_to_play = "https://www.youtube.com/watch?v=" + l_video_last_search[index_video_search].id.videoId; console.log(url_video_to_play);
     var video_title = l_video_last_search[index_video_search].snippet.title;
@@ -107,16 +116,43 @@ async function Play(text_channel, client){
 
     for(voice_channel_id of l_voice_channel_id){
 
-        console.log(voice_channel_id);
-
         var voice_channel = await client.channels.fetch(voice_channel_id);
         l_voice_channel.push(voice_channel);
 
         await voice_channel.join();
 
-        Command.Broadcast(voice_channel_id, url_video_to_play, 0);
-        text_channel.send("Playing the title : "+video_title)
+        if(auto_play){
+            AutoPlay(voice_channel_id, url_video_to_play); console.log("autoplay");
+        }
+        else{
+            Command.Broadcast(voice_channel_id, url_video_to_play, 1); console.log("broadcast classique");
+        }
     }
+
+    if(auto_play){
+        text_channel.send("Playing the title : "+video_title+" (Autoplay activated)");
+    }
+    else{
+        text_channel.send("Playing the title : "+video_title);
+    }
+}
+
+function AutoPlay(voice_channel_id, media_to_play) {
+
+    Command.Broadcast(voice_channel_id, media_to_play, 1);
+
+    var dispatcher = l_music_dispatcher.get(voice_channel_id);
+
+    if(dispatcher == undefined){
+        return;
+    }
+
+    console.log("r");
+
+    dispatcher.on("finish", () => {
+        MusicMode.AutoPlay(voice_channel_id, media_to_play);
+    });
+
 }
 
 module.exports.NextVideo = function(text_channel, client){

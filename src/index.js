@@ -51,6 +51,6 @@ Rss.FetchRssLinks();
 Rss.FetchRssLinks();
 
 // Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('NjcwMzAzMjUxMjk5ODI3NzI1.Xp24jA.gDm98UXsnQAQimjfdM3V2WoGpKw');
+client.login('NjcwMzAzMjUxMjk5ODI3NzI1.XtpKzA.F2sTw1M7oA8z3HmsuLQhsgLn0_w');
 
 //Token Bot : NjcwMzAzMjUxMjk5ODI3NzI1.Xp24jA.gDm98UXsnQAQimjfdM3V2WoGpKw

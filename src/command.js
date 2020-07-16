@@ -11,7 +11,6 @@ const Index = require("./index.js");
 const MusicMode = require("./musicmode.js");
 const Rss = require("./rss.js");
 
-var dispatcher;
 var client = Index.GetDiscordClient();
 
 var commands_def;
@@ -33,266 +32,266 @@ module.exports.TreatCommand = function (command_no_parsed, channel, client_, aut
     switch(command[0]) {
         case "help":
 
-            if(n_arg > 2){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-
-            var page_index = parseInt(command[1]);
-
-            if(isNaN(page_index)){
-                page_index = 1;
-            }
-
-            ShowHelp(channel, page_index);
+        if(n_arg > 2){
+            channel.send("Error : Too many arguments");
             break;
+        }
+
+        var page_index = parseInt(command[1]);
+
+        if(isNaN(page_index)){
+            page_index = 1;
+        }
+
+        ShowHelp(channel, page_index);
+        break;
 
         case "moveto":
 
-            if(n_arg > 2){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 2){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_str = command[1];
-            var channel_id = GetChannelId(channel.guild, channel_str);
-
-            client.channels.fetch(channel_id).then(function (channel) {
-                channel.join();
-            });
-
+        if(n_arg > 2){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 2){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_str = command[1];
+        var channel_id = GetChannelId(channel.guild, channel_str);
+
+        client.channels.fetch(channel_id).then(function (channel) {
+            channel.join();
+        });
+
+        break;
 
         case "broadcast":
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 3){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_str = command[1];
-            var channel_id = GetChannelId(channel.guild, channel_str);
-
-            var media_to_play = command[2];
-            var auto_play = command[3];
-
-            Command.Broadcast(channel_id, media_to_play);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 3){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_str = command[1];
+        var channel_id = GetChannelId(channel.guild, channel_str);
+
+        var media_to_play = command[2];
+        var auto_play = command[3];
+
+        Command.Broadcast(channel_id, media_to_play);
+
+        break;
 
         case "shutdown":
-            async () => {
-                await channel.send("Shutdown...");
-                process.exit(1);
-            }
-            break;
+        async () => {
+            await channel.send("Shutdown...");
+            process.exit(1);
+        }
+        break;
 
         case "say":
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 3){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_str = command[1];
-            var channel_id = GetChannelId(channel.guild, channel_str);
-
-            var message = command[2];
-
-            Say(channel_id, message);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 3){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_str = command[1];
+        var channel_id = GetChannelId(channel.guild, channel_str);
+
+        var message = command[2];
+
+        Say(channel_id, message);
+
+        break;
 
         case "send":
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 3){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_str = command[1];
-            channel_id = GetChannelId(channel.guild, channel_str);
-
-            var message = command[2];
-
-            Command.Send(channel_id, message);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 3){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_str = command[1];
+        channel_id = GetChannelId(channel.guild, channel_str);
+
+        var message = command[2];
+
+        Command.Send(channel_id, message);
+
+        break;
 
         case "musicmode":
 
-            var voice_channel_id;
-            var text_channel_id;
+        var voice_channel_id;
+        var text_channel_id;
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 2){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            if(n_arg < 3){
-                voice_channel_str = command[1];
-                voice_channel_id = GetChannelId(channel.guild, voice_channel_str);
-
-                text_channel_id = channel.id;
-            }
-            else{
-                var voice_channel_str = command[2];
-                voice_channel_id = GetChannelId(channel.guild, voice_channel_str);
-
-                var text_channel_str = command[1];
-                text_channel_id = GetChannelId(channel.guild, text_channel_str);
-            }
-
-            MusicMode.ToogleMusicMode(text_channel_id, voice_channel_id, channel);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 2){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        if(n_arg < 3){
+            voice_channel_str = command[1];
+            voice_channel_id = GetChannelId(channel.guild, voice_channel_str);
+
+            text_channel_id = channel.id;
+        }
+        else{
+            var voice_channel_str = command[2];
+            voice_channel_id = GetChannelId(channel.guild, voice_channel_str);
+
+            var text_channel_str = command[1];
+            text_channel_id = GetChannelId(channel.guild, text_channel_str);
+        }
+
+        MusicMode.ToogleMusicMode(text_channel_id, voice_channel_id, channel);
+
+        break;
 
         case "syv":
 
-            if(n_arg > 2){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 2){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var query = command[1];
-
-            if(!MusicMode.IsMusicMode(channel.id)){
-                channel.send("Error: You have not activated the music mode for this channel.");
-                return;
-            }
-
-            MusicMode.SearchVideo(query, channel, client, author.username);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 2){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var query = command[1];
+        var auto_play_str = command[2];
+
+        var auto_play;
+        if(auto_play_str == "1" || auto_play_str == "true"){
+            auto_play = 1;
+        }
+        else{
+            auto_play = 0;
+        }
+
+        console.log(auto_play);
+
+        if(!MusicMode.IsMusicMode(channel.id)){
+            channel.send("Error: You have not activated the music mode for this channel.");
+            return;
+        }
+
+        MusicMode.SearchVideo(query, channel, client, auto_play);
+
+        break;
 
         case "nyv":
 
-            MusicMode.NextVideo(channel, client);
+        MusicMode.NextVideo(channel, client);
 
-            break;
+        break;
 
         case "rsslist":
 
-            if(n_arg > 2){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-
-            var channel_id;
-
-            if(n_arg < 2){
-                channel_id = channel.id;
-            }
-            else if(n_arg == 2){
-                var channel_str = command[1];
-                channel_id = GetChannelId(channel.guild, channel_str);
-            }
-
-            ListRssLinks(channel_id);
-
+        if(n_arg > 2){
+            channel.send("Error : Too many arguments");
             break;
+        }
+
+        var channel_id;
+
+        if(n_arg < 2){
+            channel_id = channel.id;
+        }
+        else if(n_arg == 2){
+            var channel_str = command[1];
+            channel_id = GetChannelId(channel.guild, channel_str);
+        }
+
+        ListRssLinks(channel_id);
+
+        break;
 
         case "rssadd":
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 2){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_id;
-            var author_username = author.username;
-            var url;
-
-            if(n_arg < 3){
-                channel_id = channel.id;
-                url = command[1];
-            }
-            else if(n_arg == 3){
-                var channel_str = command[1];
-                channel_id = GetChannelId(channel.guild, channel_str);
-
-                url = command[2];
-            }
-
-            Rss.AddRssLink(url, author_username, channel_id);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 2){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_id;
+        var author_username = author.username;
+        var url;
+
+        if(n_arg < 3){
+            channel_id = channel.id;
+            url = command[1];
+        }
+        else if(n_arg == 3){
+            var channel_str = command[1];
+            channel_id = GetChannelId(channel.guild, channel_str);
+
+            url = command[2];
+        }
+
+        Rss.AddRssLink(url, author_username, channel_id);
+
+        break;
 
         case "rssremove":
 
-            if(n_arg > 3){
-                channel.send("Error : Too many arguments");
-                break;
-            }
-            else if(n_arg < 2){
-                channel.send("Error : Not enough arguments");
-                break;
-            }
-
-            var channel_id;
-            var url;
-
-            if(n_arg < 3){
-                channel_id = channel.id;
-                url = command[1];
-            }
-            else if(n_arg == 3){
-                var channel_str = command[1];
-                channel_id = GetChannelId(channel.guild, channel_str);
-
-                url = command[2];
-            }
-
-            Rss.RemoveRssLink(url, channel_id);
-
+        if(n_arg > 3){
+            channel.send("Error : Too many arguments");
             break;
+        }
+        else if(n_arg < 2){
+            channel.send("Error : Not enough arguments");
+            break;
+        }
+
+        var channel_id;
+        var url;
+
+        if(n_arg < 3){
+            channel_id = channel.id;
+            url = command[1];
+        }
+        else if(n_arg == 3){
+            var channel_str = command[1];
+            channel_id = GetChannelId(channel.guild, channel_str);
+
+            url = command[2];
+        }
+
+        Rss.RemoveRssLink(url, channel_id);
+
+        break;
 
 
 
         default:
-            channel.send("Error: The command you typed does not exist");
+        channel.send("Error: The command you typed does not exist");
     }
 
 };
-
-function AutoPlay(client, file_to_play) {
-
-    for (const connection of client.voice.connections.values()) {
-        dispatcher = connection.play(file_to_play);
-
-        dispatcher.on("finish", () => {
-            AutoPlay(client, file_to_play);
-        });
-    }
-}
 
 function ParseCommand(command) {
 
@@ -326,7 +325,7 @@ function ParseCommand(command) {
 }
 
 module.exports.IsNumber = function(value){
-   return typeof value === 'number' && isFinite(value);
+    return typeof value === 'number' && isFinite(value);
 }
 
 function Log(text) {
@@ -348,21 +347,22 @@ function Log(text) {
     });
 }
 
-module.exports.Broadcast = function (channel_id, media_to_play, auto_play){
+module.exports.Broadcast = function (channel_id, media_to_play, music){
 
-    for (const connection of client.voice.connections.values()) {
+    for (const connection of client.voice.connections.values()) { connection.play(Ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio' }));
 
         if(channel_id == "all" || channel_id == connection.channel.id){
-            dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
 
-            if(auto_play == "1"){
-                dispatcher.on("finish", () => {
-                    AutoPlay(client, media_to_play); //Ne pas oublier de mettre une condition pour lancer l'autoplay à l'avenir
-                });
+            if(music == 1){ console.log(channel_id + media_to_play + connection);
+                var dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
+                //MusicMode.GetListMusicDispatcher().set(connection.channel.id, dispatcher);
+            }
+            else{
+                connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
             }
         }
     }
-    return dispatcher;
+    //return dispatcher;
 }
 
 function Say(channel_id, message){
@@ -438,9 +438,9 @@ function GetChannelId(guild, channel_str){
         return channel_str;
     }
 
-   var channel_manager = guild.channels;
-   var m_channel = channel_manager.cache; //Liste des channels de la guilde
-   var l_channel = m_channel.array();
+    var channel_manager = guild.channels;
+    var m_channel = channel_manager.cache; //Liste des channels de la guilde
+    var l_channel = m_channel.array();
 
     for(var i = 0; i < l_channel.length; i++){
 
