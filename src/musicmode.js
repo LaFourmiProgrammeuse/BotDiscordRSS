@@ -9,12 +9,12 @@ var l_video_last_search = [];
 var index_video_search = 0;
 var n_video_per_search = 15;
 
-var l_music_dispatcher = new Map();
+var l_dispatcher = new Map(); // ID voice channel / StreamDispatcher
 
 
 //getters */* setters
-module.exports.GetListMusicDispatcher = function(){
-    return l_music_dispatcher;
+module.exports.GetListDispatcher = function(){
+    return l_dispatcher;
 }
 
 module.exports.ToogleMusicMode = function (text_channel_id, voice_channel_id, channel) {
@@ -25,6 +25,8 @@ module.exports.ToogleMusicMode = function (text_channel_id, voice_channel_id, ch
 
             console.log(l_c_musicmode.splice(i, 1));
             channel.send("Music mode has been desactivated for this channel");
+
+            Command.Stop([voice_channel_id]);
 
             return;
         }
@@ -47,7 +49,7 @@ module.exports.IsMusicMode = function (channel_id){
     return false;
 }
 
-function GetLinkedVoiceChannel(text_channel_id){
+module.exports.GetLinkedVoiceChannel = function(text_channel_id){
 
     var l_linked_voice_channel = [];
 
@@ -111,7 +113,7 @@ async function Play(text_channel, client, auto_play){
     var url_video_to_play = "https://www.youtube.com/watch?v=" + l_video_last_search[index_video_search].id.videoId; console.log(url_video_to_play);
     var video_title = l_video_last_search[index_video_search].snippet.title;
 
-    var l_voice_channel_id = GetLinkedVoiceChannel(text_channel.id);
+    var l_voice_channel_id = MusicMode.GetLinkedVoiceChannel(text_channel.id);
     var l_voice_channel = [];
 
     for(voice_channel_id of l_voice_channel_id){
@@ -121,12 +123,18 @@ async function Play(text_channel, client, auto_play){
 
         await voice_channel.join();
 
+
         if(auto_play){
             AutoPlay(voice_channel_id, url_video_to_play); console.log("autoplay");
         }
         else{
-            Command.Broadcast(voice_channel_id, url_video_to_play, 1); console.log("broadcast classique");
+            var dispatcher = Command.Broadcast(voice_channel_id, url_video_to_play, 1); console.log("broadcast classique");
+            dispatcher.on("finish", () => {
+              MusicMode.GetListDispatcher().delete(voice_channel_id);
+              console.log(MusicMode.GetListDispatcher());
+            });
         }
+
     }
 
     if(auto_play){
@@ -146,8 +154,6 @@ function AutoPlay(voice_channel_id, media_to_play) {
     if(dispatcher == undefined){
         return;
     }
-
-    console.log("r");
 
     dispatcher.on("finish", () => {
         MusicMode.AutoPlay(voice_channel_id, media_to_play);

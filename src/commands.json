@@ -31,6 +31,12 @@
             "permission": "1"
         },
         {
+            "name": "stop",
+            "description": "Stop the vocal action of the bot",
+            "use": "!stop [<voice_channel_id>]",
+            "permission": "1"
+        },
+        {
             "name": "shutdown",
             "description": "Turn off the bot",
             "use": "!shutdown",

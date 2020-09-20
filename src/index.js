@@ -16,10 +16,36 @@ const Command = require("./command.js");
 const Youtube = require("./youtube.js");
 const MusicMode = require("./musicmode.js");
 
+var discord_token;
+
+
+async function LoadDiscordToken(){
+
+  return new Promise((resolve, reject) => {
+
+    Fs.readFile("../discord_token.txt", "utf8", (err, data) => {
+
+      if(err){
+        console.log("Impossible de charger le token discord");
+        reject();
+      }
+      else{
+        discord_token = data.replace(/[\n]/gi, "");
+        resolve();
+      }
+    });
+  });
+}
+async function LoginToDiscord(){
+  await LoadDiscordToken();
+  console.log(discord_token);
+  client.login(discord_token);
+}
+
 client.on('ready', () => {
     console.log('I am ready!');
 
-    //rss.FetchRssLinks();
+
     client.user.setActivity("un meeting de JLM", {type: "WATCHING"});
 });
 
@@ -47,10 +73,5 @@ client.on('message', message => {
 });
 
 Rss.FetchRssLinks();
-Rss.FetchRssLinks();
-Rss.FetchRssLinks();
 
-// Log our bot in using the token from https://discordapp.com/developers/applications/me
-client.login('NjcwMzAzMjUxMjk5ODI3NzI1.XtpKzA.F2sTw1M7oA8z3HmsuLQhsgLn0_w');
-
-//Token Bot : NjcwMzAzMjUxMjk5ODI3NzI1.Xp24jA.gDm98UXsnQAQimjfdM3V2WoGpKw
+LoginToDiscord();

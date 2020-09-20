@@ -7,6 +7,7 @@ var Aws = require("aws-sdk");
 
 const Index = require("./index.js");
 const Command = require("./command.js");
+const MusicMode = require("./musicmode.js");
 
 var polly = new Aws.Polly(/*{region: "us-west-2"}*/);
 
@@ -46,9 +47,14 @@ module.exports.Speak = function (data, callback_arg){
     for (const connection of client.voice.connections.values()) {
 
         if(connection.channel.id == channel_id) {
-            
 
-            dispatcher = connection.play(Fs.createReadStream('../text_to_speak.mp3'));
+            var dispatcher = connection.play(Fs.createReadStream('../text_to_speak.mp3'));
+            MusicMode.GetListDispatcher().set(connection.channel.id, dispatcher);
+
+            dispatcher.on("finish", () => {
+              dispatcher.destroy();
+              MusicMode.GetListDispatcher().delete(voice_channel_id);
+            });
         }
     }
 }

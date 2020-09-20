@@ -87,6 +87,28 @@ module.exports.TreatCommand = function (command_no_parsed, channel, client_, aut
 
         break;
 
+        case "stop":
+
+        if(n_arg > 2){
+            channel.send("Error : Too many arguments");
+            break;
+        }
+
+        var l_channel_id;
+        if(n_arg == 1){
+
+            l_channel_id = MusicMode.GetLinkedVoiceChannel(channel.id);
+        }
+        else if(n_arg == 2){
+
+          var channel_str = command[1];
+          l_channel_id = [channel_id = GetChannelId(channel.guild, channel_str)];
+        }
+
+        Command.Stop(l_channel_id);
+
+        break;
+
         case "shutdown":
         async () => {
             await channel.send("Shutdown...");
@@ -349,20 +371,22 @@ function Log(text) {
 
 module.exports.Broadcast = function (channel_id, media_to_play, music){
 
-    for (const connection of client.voice.connections.values()) { connection.play(Ytdl('https://www.youtube.com/watch?v=ZlAU_w7-Xp8', { quality: 'highestaudio' }));
+    var dispatcher;
 
+    for (const connection of client.voice.connections.values()) {
         if(channel_id == "all" || channel_id == connection.channel.id){
 
-            if(music == 1){ console.log(channel_id + media_to_play + connection);
-                var dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
-                //MusicMode.GetListMusicDispatcher().set(connection.channel.id, dispatcher);
+            if(music == 1){
+                dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
             }
             else{
-                connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
+                dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
             }
+            MusicMode.GetListDispatcher().set(connection.channel.id, dispatcher);
+            console.log(MusicMode.GetListDispatcher());
         }
     }
-    //return dispatcher;
+    return dispatcher;
 }
 
 function Say(channel_id, message){
@@ -391,6 +415,27 @@ module.exports.Send = function(channel_id, message){
     client.channels.fetch(channel_id).then(function(channel){
         channel.send(message);
     });
+}
+
+module.exports.Stop = function(l_voice_channel_id){
+
+  if(l_voice_channel_id == undefined){
+    return;
+  }
+
+  var l_dispatcher = MusicMode.GetListDispatcher();
+
+  for(let i = 0; i < l_voice_channel_id.length; i++){
+
+    let voice_channel_id = l_voice_channel_id[i];
+
+    if(l_dispatcher.has(voice_channel_id)){
+      var dispatcher = l_dispatcher.get(voice_channel_id);
+      dispatcher.destroy();
+
+      l_dispatcher.delete(voice_channel_id);
+    }
+  }
 }
 
 function ShowHelp(channel, page_index) {
