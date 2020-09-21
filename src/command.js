@@ -22,7 +22,7 @@ Fs.readFile("./commands.json", "utf8", (err, data) => {
 var Command = module.exports;
 
 
-module.exports.TreatCommand = function (command_no_parsed, channel, client_, author) {
+module.exports.TreatCommand = async function (command_no_parsed, channel, author) {
 
     Log("La commande \"" + command_no_parsed + "\" a été executé par " + author.username);
 
@@ -80,10 +80,18 @@ module.exports.TreatCommand = function (command_no_parsed, channel, client_, aut
         var channel_str = command[1];
         var channel_id = GetChannelId(channel.guild, channel_str);
 
+        await client.channels.fetch(channel_id).then(function (channel) {
+          channel.join();
+        });
+
         var media_to_play = command[2];
         var auto_play = command[3];
 
-        Command.Broadcast(channel_id, media_to_play);
+        var dispatcher = Command.Broadcast(channel_id, media_to_play);
+
+        dispatcher.on("finish", () => {
+          MusicMode.GetListDispatcher().delete(channel_id);
+        });
 
         break;
 
@@ -97,7 +105,16 @@ module.exports.TreatCommand = function (command_no_parsed, channel, client_, aut
         var l_channel_id;
         if(n_arg == 1){
 
-            l_channel_id = MusicMode.GetLinkedVoiceChannel(channel.id);
+            l_channel_id = [GetUserLoggedVoiceChannel(channel.guild, author)];
+
+            /* Si l'utilisateur n'a pas spécifié de channel et qu'il n'est lui même connecté
+               à aucun channel on regarde si il a lancé la commande stop dans un channel text
+               linké avec un channel vocal (music mode activé) */
+
+            if(l_channel_id == null){
+
+              l_channel_id = MusicMode.GetLinkedVoiceChannel(channel.id);
+            }
         }
         else if(n_arg == 2){
 
@@ -383,7 +400,6 @@ module.exports.Broadcast = function (channel_id, media_to_play, music){
                 dispatcher = connection.play(Ytdl(media_to_play, { quality: 'highestaudio' }));
             }
             MusicMode.GetListDispatcher().set(connection.channel.id, dispatcher);
-            console.log(MusicMode.GetListDispatcher());
         }
     }
     return dispatcher;
@@ -493,4 +509,26 @@ function GetChannelId(guild, channel_str){
             return l_channel[i].id;
         }
     }
+}
+
+//Seulement au sein de la guilde
+function GetUserLoggedVoiceChannel(guild, user){
+  let l_guild_channels = guild.channels.cache;
+
+  for(const [channel_id, channel] of l_guild_channels.entries()){
+
+    if(channel.type == "voice"){
+
+      for(const member of channel.members.values()){
+
+        if(member.user.id == user.id){
+          let user_channel = channel_id;
+
+          return user_channel;
+        }
+      }
+    }
+  }
+
+  return null;
 }

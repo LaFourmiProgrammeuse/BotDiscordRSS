@@ -129,9 +129,9 @@ async function Play(text_channel, client, auto_play){
         }
         else{
             var dispatcher = Command.Broadcast(voice_channel_id, url_video_to_play, 1); console.log("broadcast classique");
+
             dispatcher.on("finish", () => {
               MusicMode.GetListDispatcher().delete(voice_channel_id);
-              console.log(MusicMode.GetListDispatcher());
             });
         }
 

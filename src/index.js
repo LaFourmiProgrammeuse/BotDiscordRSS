@@ -60,7 +60,7 @@ client.on('message', message => {
     let channel = message.channel;
     let author = message.author;
 
-    Command.TreatCommand(command, channel, client, author);
+    Command.TreatCommand(command, channel, author);
     }
 
     //On regarde si le message est le channel qui permet de diffuser dans le channel Général de Team

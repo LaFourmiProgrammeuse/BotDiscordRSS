@@ -9,31 +9,31 @@
         {
             "name": "say",
             "description": "Make the bot talk",
-            "use": "!say <channel_id> <text>",
+            "use": "!say <channel_name or id> <text>",
             "permission": "1"
         },
         {
             "name": "send",
             "description": "Make the bot send a message",
-            "use": "!send <channel_id> <text>",
+            "use": "!send <channel_name or id> <text>",
             "permission": "1"
         },
         {
             "name": "broadcast",
             "description": "Get the bot to play some music",
-            "use": "!broadcast <channel_id> <url> [<volume>]",
+            "use": "!broadcast <channel_name or id> <url> [<volume>]",
             "permission": "1"
         },
         {
             "name": "moveto",
             "description": "Add the bot to a voice channel",
-            "use": "!moveto <channel_id>",
+            "use": "!moveto <channel_name or id>",
             "permission": "1"
         },
         {
             "name": "stop",
             "description": "Stop the vocal action of the bot",
-            "use": "!stop [<voice_channel_id>]",
+            "use": "!stop [<voice_channel_name or id>]",
             "permission": "1"
         },
         {
@@ -45,7 +45,7 @@
         {
             "name": "musicmode",
             "description": "Activate/Desactivate music mode",
-            "use": "!musicmode <voice_channel_id>",
+            "use": "!musicmode <voice_channel_name or id>",
             "permission": "1"
         },
         {
@@ -75,25 +75,25 @@
         {
             "name": "rssadd",
             "description": "Add an rss link to the list of a channel",
-            "use": "!rssadd [<channel>] <rss_url>",
+            "use": "!rssadd [<channel_name or id>] <rss_url>",
             "permission": "1"
         },
         {
             "name": "rssremove",
             "description": "Remove an SSR link to the list of a channel",
-            "use": "!rssremove [<channel>] <rss_url>",
+            "use": "!rssremove [<channel_name or id>] <rss_url>",
             "permission": "1"
         },
         {
             "name": "rfo",
             "description": "Retrieves once the rss link data from the list of the specified channel",
-            "use": "!rfo [<channel>]",
+            "use": "!rfo [<channel_name or id>]",
             "permission": "1"
         },
         {
             "name": "rfa",
             "description": "Automatically retrieve rss link data from the specified channel list",
-            "use": "!rfa [<channel>]",
+            "use": "!rfa [<channel_name or id>]",
             "permission": "1"
         }
     ],
