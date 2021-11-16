@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "aws-sdk": "^2.658.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.19.2",
     "form-data": "^3.0.0",
     "googleapis": "^49.0.0",
